@@ -23,7 +23,8 @@ app.use((req, res, next) => {
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://your-frontend.vercel.app"
+  "http://127.0.0.1:3000",
+  "https://landline-frontend.vercel.app"
 ];
 
 const corsOptions = {
