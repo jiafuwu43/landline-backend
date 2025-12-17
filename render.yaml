@@ -9,6 +9,3 @@ services:
         value: production
       - key: PORT
         value: 10000
-      - key: FRONTEND_URL
-        sync: false
-

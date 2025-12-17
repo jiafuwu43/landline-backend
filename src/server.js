@@ -31,17 +31,39 @@ app.use((err, req, res, next) => {
   });
 });
 
-db.connect()
-  .then(() => {
-    app.listen(PORT, () => {});
-  })
-  .catch((err) => {
-    process.exit(1);
-  });
+// Only start server if running as standalone (not as Netlify function)
+if (require.main === module) {
+  // Running as standalone server
+  db.connect()
+    .then(() => {
+      const server = app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+      });
 
-process.on('SIGINT', async () => {
-  await db.close();
-  process.exit(0);
-});
+      server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+          console.error(`Port ${PORT} is already in use. Please stop the other process or use a different port.`);
+          console.error(`To find and kill the process: lsof -ti:${PORT} | xargs kill -9`);
+        } else {
+          console.error('Server error:', err);
+        }
+        process.exit(1);
+      });
+    })
+    .catch((err) => {
+      console.error('Database connection error:', err.message);
+      process.exit(1);
+    });
+
+  process.on('SIGINT', async () => {
+    await db.close();
+    process.exit(0);
+  });
+} else {
+  // Running as Netlify function - initialize DB connection
+  db.connect().catch((err) => {
+    console.error('Database connection error:', err.message);
+  });
+}
 
 module.exports = app;
