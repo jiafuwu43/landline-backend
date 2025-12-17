@@ -9,39 +9,44 @@ const authRouter = require('./routes/auth');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Configure CORS to allow all origins and handle preflight requests
+// Configure CORS - MUST be the first middleware, before all routes
+// Allow all origins and all methods
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow all origins - no restrictions
+    // Origin can be undefined for same-origin requests
+    callback(null, true);
+  },
+  credentials: false, // Set to false when allowing all origins
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  exposedHeaders: [],
+  maxAge: 86400, // 24 hours
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
+
+// Apply CORS middleware first
+app.use(cors(corsOptions));
+
+// Additional manual headers as backup (runs after cors middleware)
 app.use((req, res, next) => {
-  // Allow all origins
+  // Set CORS headers explicitly
   const origin = req.headers.origin;
   if (origin) {
     res.header('Access-Control-Allow-Origin', origin);
   } else {
     res.header('Access-Control-Allow-Origin', '*');
   }
-  
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Max-Age', '86400'); // 24 hours
-
-  // Handle preflight OPTIONS requests
+  
+  // Handle preflight requests
   if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
+    return res.status(204).end();
   }
   next();
 });
-
-// Also use cors middleware for additional support
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow all origins
-    callback(null, true);
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
-};
-app.use(cors(corsOptions));
 
 app.use(express.json());
 
