@@ -4,7 +4,7 @@
   "description": "Backend API for shuttle booking widget",
   "main": "src/server.js",
   "scripts": {
-    "build": "your-build-command",
+    "build": "npm install",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "init-db": "node database/init.js"
