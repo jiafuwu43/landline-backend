@@ -33,13 +33,7 @@ app.use((req, res, next) => {
 
 // Also use cors middleware to allow all origins
 const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow all origins - no restrictions
-    callback(null, true);
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  origin: ['http://localhost:3000', 'https://landline-frontend.vercel.app'],
 };
 app.use(cors(corsOptions));
 app.use(express.json());
