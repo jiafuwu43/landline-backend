@@ -9,33 +9,40 @@ const authRouter = require('./routes/auth');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Allow all CORS origins - no restrictions
-// app.use((req, res, next) => {
-//   // Allow all origins
-//   const origin = req.headers.origin;
-//   if (origin) {
-//     res.header('Access-Control-Allow-Origin', origin);
-//   } else {
-//     res.header('Access-Control-Allow-Origin', '*');
-//   }
+// Configure CORS to allow all origins and handle preflight requests
+app.use((req, res, next) => {
+  // Allow all origins
+  const origin = req.headers.origin;
+  if (origin) {
+    res.header('Access-Control-Allow-Origin', origin);
+  } else {
+    res.header('Access-Control-Allow-Origin', '*');
+  }
   
-//   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-//   res.header('Access-Control-Allow-Credentials', 'true');
-//   res.header('Access-Control-Max-Age', '86400'); // 24 hours
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Max-Age', '86400'); // 24 hours
 
-//   // Handle preflight requests
-//   if (req.method === 'OPTIONS') {
-//     return res.sendStatus(200);
-//   }
-//   next();
-// });
+  // Handle preflight OPTIONS requests
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
-// Also use cors middleware to allow all origins
+// Also use cors middleware for additional support
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://landline-frontend.vercel.app'],
+  origin: function (origin, callback) {
+    // Allow all origins
+    callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
 };
 app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.get('/health', (req, res) => {

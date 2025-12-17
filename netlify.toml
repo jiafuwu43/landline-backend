@@ -7,11 +7,12 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/server/:splat"
+  to = "https://landline-frontend.vercel.app/:splat"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/health"
-  to = "/.netlify/functions/server/health"
+  to = "https://landline-frontend.vercel.app/health"
   status = 200
 
