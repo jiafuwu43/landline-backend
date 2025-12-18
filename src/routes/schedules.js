@@ -6,6 +6,8 @@ router.get('/search', async (req, res, next) => {
   try {
     const { origin, destination, date } = req.query;
 
+    console.log('Search request:', { origin, destination, date });
+
     if (!origin || !destination || !date) {
       return res.status(400).json({
         error: 'Missing required parameters: origin, destination, date',
@@ -13,6 +15,7 @@ router.get('/search', async (req, res, next) => {
     }
 
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      console.log('Invalid date format:', date);
       return res.status(400).json({
         error: 'Invalid date format. Use YYYY-MM-DD',
       });
@@ -40,6 +43,8 @@ router.get('/search', async (req, res, next) => {
       [route.id, dayOfWeek]
     );
 
+    console.log(`Found ${schedules.length} schedules matching route and day_of_week`);
+
     const results = [];
     for (const schedule of schedules) {
       const inventory = await db.get(
@@ -48,6 +53,12 @@ router.get('/search', async (req, res, next) => {
          WHERE i.schedule_id = $1 AND i.date = $2`,
         [schedule.schedule_id, date]
       );
+
+      if (!inventory) {
+        console.log(`No inventory found for schedule ${schedule.schedule_id} on date ${date}`);
+      } else if (inventory.available_seats <= 0) {
+        console.log(`Inventory ${inventory.inventory_id} has no available seats`);
+      }
 
       if (inventory && inventory.available_seats > 0) {
         const price = route.base_price * inventory.price_modifier;
@@ -64,6 +75,7 @@ router.get('/search', async (req, res, next) => {
       }
     }
 
+    console.log(`Returning ${results.length} available trips`);
     res.json(results);
   } catch (err) {
     next(err);
