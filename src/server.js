@@ -23,12 +23,26 @@ app.use((req, res, next) => {
   next();
 });
 
+// app.use(cors({
+//   origin: true,
+//   credentials: false,
+//   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+// }));
+
+
 app.use(cors({
-  origin: true,
-  credentials: false,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  origin: [
+    "https://landline-frontend.vercel.app",
+    "http://localhost:3000"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
+  credentials: true
 }));
+
+app.options("*", cors()); // IMPORTANT for preflight
+
 
 app.use(express.json());
 
