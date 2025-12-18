@@ -115,12 +115,20 @@ async function generateInventory(client) {
   const schedulesResult = await client.query('SELECT id, route_id FROM schedules');
   const schedules = schedulesResult.rows;
 
-  const today = new Date();
+  const today = new Date('2025-12-18T00:00:00');
+  today.setHours(0, 0, 0, 0);
+
+  const getDateString = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   for (let day = 0; day < 30; day++) {
     const date = new Date(today);
     date.setDate(today.getDate() + day);
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = getDateString(date);
 
     const dayOfWeek = date.getDay();
 
@@ -146,14 +154,43 @@ async function generateInventory(client) {
         }
 
         const totalSeats = 14;
-        const availableSeats = totalSeats;
+        let availableSeats = totalSeats;
 
-        await client.query(
-          `INSERT INTO inventory (schedule_id, date, total_seats, available_seats, price_modifier)
-           VALUES ($1, $2, $3, $4, $5)
-           ON CONFLICT (schedule_id, date) DO NOTHING`,
-          [schedule.id, dateStr, totalSeats, availableSeats, priceModifier]
-        );
+        if (day === 0) {
+          const existingInventory = await client.query(
+            `SELECT id FROM inventory WHERE schedule_id = $1 AND date = $2`,
+            [schedule.id, dateStr]
+          );
+          
+          if (existingInventory.rows.length > 0) {
+            const inventoryId = existingInventory.rows[0].id;
+            const reservedCount = await client.query(
+              `SELECT COUNT(*) as count FROM reservations 
+               WHERE inventory_id = $1 AND status != 'cancelled'`,
+              [inventoryId]
+            );
+            const reserved = parseInt(reservedCount.rows[0]?.count || 0);
+            availableSeats = Math.max(0, totalSeats - reserved);
+          }
+
+          await client.query(
+            `INSERT INTO inventory (schedule_id, date, total_seats, available_seats, price_modifier)
+             VALUES ($1, $2, $3, $4, $5)
+             ON CONFLICT (schedule_id, date) 
+             DO UPDATE SET 
+               total_seats = $3,
+               available_seats = $4,
+               price_modifier = $5`,
+            [schedule.id, dateStr, totalSeats, availableSeats, priceModifier]
+          );
+        } else {
+          await client.query(
+            `INSERT INTO inventory (schedule_id, date, total_seats, available_seats, price_modifier)
+             VALUES ($1, $2, $3, $4, $5)
+             ON CONFLICT (schedule_id, date) DO NOTHING`,
+            [schedule.id, dateStr, totalSeats, availableSeats, priceModifier]
+          );
+        }
       }
     }
   }
