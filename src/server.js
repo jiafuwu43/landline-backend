@@ -23,14 +23,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(cors({
-//   origin: true,
-//   credentials: false,
-//   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
-// }));
-
-
 app.use(cors({
   origin: [
     "https://landline-frontend.vercel.app",
@@ -41,8 +33,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.options("*", cors()); // IMPORTANT for preflight
-
+app.options("*", cors());
 
 app.use(express.json());
 
@@ -63,22 +54,17 @@ app.use((err, req, res, next) => {
 
 db.connect()
   .then(() => {
-    const server = app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+    const server = app.listen(PORT, () => {});
 
     server.on('error', (err) => {
       if (err.code === 'EADDRINUSE') {
-        console.error(`Port ${PORT} is already in use. Please stop the other process or use a different port.`);
-        console.error(`To find and kill the process: lsof -ti:${PORT} | xargs kill -9`);
+        process.exit(1);
       } else {
-        console.error('Server error:', err);
+        process.exit(1);
       }
-      process.exit(1);
     });
   })
   .catch((err) => {
-    console.error('Database connection error:', err.message);
     process.exit(1);
   });
 

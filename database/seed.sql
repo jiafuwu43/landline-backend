@@ -1,94 +1,22 @@
 INSERT INTO routes (origin, destination, distance_miles, base_price) VALUES
 ('Los Angeles', 'San Francisco', 380, 49.00),
-('Los Angeles', 'Las Vegas', 270, 39.00),
-('Los Angeles', 'Sacramento', 385, 50.00),
-('Los Angeles', 'San Diego', 120, 29.00),
-('Los Angeles', 'New York', 2789, 199.00),
-('Los Angeles', 'Boston', 2977, 209.00),
-('Los Angeles', 'Philadelphia', 2714, 189.00),
-('Los Angeles', 'Portland', 960, 89.00),
-('Los Angeles', 'Phoenix', 370, 55.00),
 ('San Francisco', 'Los Angeles', 380, 49.00),
-('San Francisco', 'Las Vegas', 568, 69.00),
-('San Francisco', 'Sacramento', 90, 25.00),
-('San Francisco', 'San Diego', 500, 59.00),
-('San Francisco', 'New York', 2905, 209.00),
-('San Francisco', 'Boston', 3093, 219.00),
-('San Francisco', 'Philadelphia', 2830, 199.00),
-('San Francisco', 'Portland', 635, 79.00),
-('San Francisco', 'Phoenix', 756, 89.00),
+('Los Angeles', 'Las Vegas', 270, 39.00),
 ('Las Vegas', 'Los Angeles', 270, 39.00),
-('Las Vegas', 'San Francisco', 568, 69.00),
-('Las Vegas', 'Sacramento', 571, 69.00),
-('Las Vegas', 'San Diego', 331, 45.00),
-('Las Vegas', 'New York', 2520, 179.00),
-('Las Vegas', 'Boston', 2708, 189.00),
-('Las Vegas', 'Philadelphia', 2445, 169.00),
-('Las Vegas', 'Portland', 1118, 109.00),
-('Las Vegas', 'Phoenix', 300, 42.00),
-('Sacramento', 'Los Angeles', 385, 50.00),
+('San Francisco', 'Sacramento', 90, 25.00),
 ('Sacramento', 'San Francisco', 90, 25.00),
-('Sacramento', 'Las Vegas', 571, 69.00),
-('Sacramento', 'San Diego', 500, 59.00),
-('Sacramento', 'New York', 2815, 199.00),
-('Sacramento', 'Boston', 3003, 209.00),
-('Sacramento', 'Philadelphia', 2740, 189.00),
-('Sacramento', 'Portland', 580, 69.00),
-('Sacramento', 'Phoenix', 756, 89.00),
+('Los Angeles', 'San Diego', 120, 29.00),
 ('San Diego', 'Los Angeles', 120, 29.00),
-('San Diego', 'San Francisco', 500, 59.00),
-('San Diego', 'Las Vegas', 331, 45.00),
-('San Diego', 'Sacramento', 500, 59.00),
-('San Diego', 'New York', 2669, 189.00),
-('San Diego', 'Boston', 2857, 199.00),
-('San Diego', 'Philadelphia', 2594, 179.00),
-('San Diego', 'Portland', 1255, 119.00),
-('San Diego', 'Phoenix', 355, 48.00),
-('New York', 'Los Angeles', 2789, 199.00),
-('New York', 'San Francisco', 2905, 209.00),
-('New York', 'Las Vegas', 2520, 179.00),
-('New York', 'Sacramento', 2815, 199.00),
-('New York', 'San Diego', 2669, 189.00),
 ('New York', 'Boston', 215, 42.00),
-('New York', 'Philadelphia', 95, 28.00),
-('New York', 'Portland', 2454, 179.00),
-('New York', 'Phoenix', 2425, 169.00),
-('Boston', 'Los Angeles', 2977, 209.00),
-('Boston', 'San Francisco', 3093, 219.00),
-('Boston', 'Las Vegas', 2708, 189.00),
-('Boston', 'Sacramento', 3003, 209.00),
-('Boston', 'San Diego', 2857, 199.00),
 ('Boston', 'New York', 215, 42.00),
-('Boston', 'Philadelphia', 310, 48.00),
-('Boston', 'Portland', 110, 32.00),
-('Boston', 'Phoenix', 2613, 179.00),
-('Philadelphia', 'Los Angeles', 2714, 189.00),
-('Philadelphia', 'San Francisco', 2830, 199.00),
-('Philadelphia', 'Las Vegas', 2445, 169.00),
-('Philadelphia', 'Sacramento', 2740, 189.00),
-('Philadelphia', 'San Diego', 2594, 179.00),
+('New York', 'Philadelphia', 95, 28.00),
 ('Philadelphia', 'New York', 95, 28.00),
-('Philadelphia', 'Boston', 310, 48.00),
-('Philadelphia', 'Portland', 2549, 179.00),
-('Philadelphia', 'Phoenix', 2350, 159.00),
-('Portland', 'Los Angeles', 960, 89.00),
-('Portland', 'San Francisco', 635, 79.00),
-('Portland', 'Las Vegas', 1118, 109.00),
-('Portland', 'Sacramento', 580, 69.00),
-('Portland', 'San Diego', 1255, 119.00),
-('Portland', 'New York', 2454, 179.00),
+('Boston', 'Portland', 110, 32.00),
 ('Portland', 'Boston', 110, 32.00),
-('Portland', 'Philadelphia', 2549, 179.00),
-('Portland', 'Phoenix', 1485, 139.00),
+('Los Angeles', 'Phoenix', 370, 55.00),
 ('Phoenix', 'Los Angeles', 370, 55.00),
-('Phoenix', 'San Francisco', 756, 89.00),
-('Phoenix', 'Las Vegas', 300, 42.00),
-('Phoenix', 'Sacramento', 756, 89.00),
-('Phoenix', 'San Diego', 355, 48.00),
-('Phoenix', 'New York', 2425, 169.00),
-('Phoenix', 'Boston', 2613, 179.00),
-('Phoenix', 'Philadelphia', 2350, 159.00),
-('Phoenix', 'Portland', 1485, 139.00);
+('San Francisco', 'Portland', 635, 79.00),
+('Portland', 'San Francisco', 635, 79.00);
 
 INSERT INTO schedules (route_id, departure_time, arrival_time, day_of_week) VALUES
 (1, '06:00:00', '10:30:00', NULL),
@@ -175,3 +103,59 @@ INSERT INTO schedules (route_id, departure_time, arrival_time, day_of_week) VALU
 (10, '14:00:00', '18:00:00', NULL),
 (10, '16:00:00', '20:00:00', NULL),
 (10, '18:00:00', '22:00:00', NULL);
+
+INSERT INTO schedules (route_id, departure_time, arrival_time, day_of_week) VALUES
+(11, '07:00:00', '09:00:00', NULL),
+(11, '09:00:00', '11:00:00', NULL),
+(11, '11:00:00', '13:00:00', NULL),
+(11, '13:00:00', '15:00:00', NULL),
+(11, '15:00:00', '17:00:00', NULL),
+(11, '17:00:00', '19:00:00', NULL);
+
+INSERT INTO schedules (route_id, departure_time, arrival_time, day_of_week) VALUES
+(12, '07:00:00', '09:00:00', NULL),
+(12, '09:00:00', '11:00:00', NULL),
+(12, '11:00:00', '13:00:00', NULL),
+(12, '13:00:00', '15:00:00', NULL),
+(12, '15:00:00', '17:00:00', NULL),
+(12, '17:00:00', '19:00:00', NULL);
+
+INSERT INTO schedules (route_id, departure_time, arrival_time, day_of_week) VALUES
+(13, '07:30:00', '09:45:00', NULL),
+(13, '09:30:00', '11:45:00', NULL),
+(13, '11:30:00', '13:45:00', NULL),
+(13, '13:30:00', '15:45:00', NULL),
+(13, '15:30:00', '17:45:00', NULL),
+(13, '17:30:00', '19:45:00', NULL);
+
+INSERT INTO schedules (route_id, departure_time, arrival_time, day_of_week) VALUES
+(14, '07:30:00', '09:45:00', NULL),
+(14, '09:30:00', '11:45:00', NULL),
+(14, '11:30:00', '13:45:00', NULL),
+(14, '13:30:00', '15:45:00', NULL),
+(14, '15:30:00', '17:45:00', NULL),
+(14, '17:30:00', '19:45:00', NULL);
+
+INSERT INTO schedules (route_id, departure_time, arrival_time, day_of_week) VALUES
+(15, '06:00:00', '12:00:00', NULL),
+(15, '08:00:00', '14:00:00', NULL),
+(15, '10:00:00', '16:00:00', NULL),
+(15, '12:00:00', '18:00:00', NULL),
+(15, '14:00:00', '20:00:00', NULL);
+
+INSERT INTO schedules (route_id, departure_time, arrival_time, day_of_week) VALUES
+(16, '06:00:00', '12:00:00', NULL),
+(16, '08:00:00', '14:00:00', NULL),
+(16, '10:00:00', '16:00:00', NULL),
+(16, '12:00:00', '18:00:00', NULL),
+(16, '14:00:00', '20:00:00', NULL);
+
+INSERT INTO schedules (route_id, departure_time, arrival_time, day_of_week) VALUES
+(17, '06:00:00', '16:30:00', NULL),
+(17, '08:00:00', '18:30:00', NULL),
+(17, '10:00:00', '20:30:00', NULL);
+
+INSERT INTO schedules (route_id, departure_time, arrival_time, day_of_week) VALUES
+(18, '06:00:00', '16:30:00', NULL),
+(18, '08:00:00', '18:30:00', NULL),
+(18, '10:00:00', '20:30:00', NULL);
